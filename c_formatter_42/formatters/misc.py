@@ -30,6 +30,30 @@ def space_before_semi_colon(content: str) -> str:
     )
 
 
+def space_operators_from_structs(content: str) -> str:
+    """
+    Norminette Error:
+    SPC_AFTER/BFR_OPERATOR      ... missing space after/before operator
+    """
+    left_operators = r'("[^"\\]*(?:\\.[^"\\]*)*")|(\w)(==|!=|<=|>=|&&|\|\||=)'
+    right_opperators = r'("[^"\\]*(?:\\.[^"\\]*)*")|(==|!=|<=|>=|&&|\|\||=)(\w)'
+
+    def replace_left(match):
+        if match.group(1):
+            return match.group(1)
+        return f"{match.group(2)} {match.group(3)}"
+
+    def replace_right(match):
+        if match.group(1):
+            return match.group(1)
+        return f"{match.group(2)} {match.group(3)}"
+
+    content = re.sub(left_operators, replace_left, content)
+    content = re.sub(right_opperators, replace_right, content)
+
+    return content
+
+
 def remove_multiline_condition_space(content: str) -> str:
     return re.sub(
         r"(?P<tabs>\t+) {1,3}(?P<rest>.*)",
