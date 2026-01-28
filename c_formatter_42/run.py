@@ -19,6 +19,7 @@ from c_formatter_42.formatters.misc import (
     parenthesize_return,
     remove_multiline_condition_space,
     space_before_semi_colon,
+    space_operators_from_structs,
 )
 from c_formatter_42.formatters.preprocessor_directive import preprocessor_directive
 from c_formatter_42.formatters.return_type_single_tab import return_type_single_tab
@@ -30,6 +31,7 @@ def run_all(content: str) -> str:
     content = preprocessor_directive(content)
     content = remove_multiline_condition_space(content)
     content = parenthesize_return(content)
+    content = space_operators_from_structs(content)
     content = space_before_semi_colon(content)
     content = hoist(content)
     content = align(content)
